@@ -1,0 +1,87 @@
+{% load static %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Digital Library & Resource Center</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+
+    <nav class="border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        
+        <a href="/" class="flex items-center gap-4 group">
+            <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800/80 p-1 flex items-center justify-center shadow-2xl shadow-indigo-500/10 overflow-hidden group-hover:border-indigo-500/40 transition duration-300">
+                <img src="{% static 'images/UCSM_logo.png' %}" 
+                     alt="UCSM Logo" 
+                     class="w-full h-full object-contain [image-rendering:high-quality] scale-105">
+            </div>
+            <div>
+                <span class="text-xl font-extrabold tracking-wide text-slate-200 block leading-tight group-hover:text-indigo-400 transition duration-300">Smart Digital Library</span>
+                <span class="text-xs text-indigo-400 font-semibold block mt-1 tracking-wider uppercase">UCSM Resource Center</span>
+            </div>
+        </a>
+
+        <div class="flex items-center gap-4">
+            <a href="/login/" class="text-sm font-medium text-slate-400 hover:text-white transition">လော့ဂ်အင်ဝင်ရန်</a>
+            <a href="/signup/" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/20">အကောင့်အသစ်ဖွင့်ရန်</a>
+        </div>
+    </div>
+</nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center flex-grow">
+        <div class="space-y-6">
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold text-slate-100 leading-tight tracking-wide">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-cyan-400">
+                    Smart Digital Library <br>& Resource Center
+                </span>
+            </h1>
+            
+            <p class="text-slate-400 leading-relaxed max-w-lg text-justify [text-justify:inter-word]">
+                ကျောင်းသား/သူများနှင့် ဆရာမများအတွက် အသိပညာဗဟုသုတများနှင့် သုတေသနစာတမ်းများကို တစ်နေရာတည်းတွင် စနစ်တကျ ရှာဖွေဖတ်ရှုနိုင်ပြီး၊ လုံခြုံစိတ်ချရသော OTP စနစ်၊ အလိုအလျောက် စာအုပ်ငှားရမ်းမှုစနစ်တို့ဖြင့် ဖန်တီးထားသည့် Digital Resource Center ဖြစ်ပါသည်။
+            </p>
+            <div class="pt-4 flex flex-wrap gap-4">
+                <a href="/login/" class="bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white font-medium px-8 py-3.5 rounded-xl transition shadow-xl shadow-indigo-600/20 flex items-center gap-2">
+                    စနစ်ကို စတင်အသုံးပြုမည် <i class="fa-solid fa-arrow-right text-sm"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            
+            <a href="{% if user.is_authenticated %}/books/{% else %}/login/?next=/books/{% endif %}" class="p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-3 hover:border-indigo-500/50 transition block hover:bg-slate-900/50 group">
+                <div class="text-indigo-400 text-2xl group-hover:scale-110 transition duration-300"><i class="fa-solid fa-book-open"></i></div>
+                <h3 class="font-bold text-slate-200 text-base group-hover:text-indigo-400 transition">Academic Resources</h3>
+                <p class="text-xs text-slate-500">သင်ခန်းစာစာအုပ်များနှင့် သုတေသနဂျာနယ်များကို Category အလိုက် စက္ကန့်ပိုင်းအတွင်း ရှာဖွေနိုင်သည်။</p>
+            </a>
+
+            <a href="/login/" class="p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-3 hover:border-cyan-500/50 transition block hover:bg-slate-900/50 group">
+                <div class="text-cyan-400 text-2xl group-hover:scale-110 transition duration-300"><i class="fa-solid fa-user-shield"></i></div>
+                <h3 class="font-bold text-slate-200 text-base group-hover:text-cyan-400 transition">Secure Gateway</h3>
+                <p class="text-xs text-slate-500">ကျောင်းသားအကောင့်များ လုံခြုံမှုရှိစေရန် 2FA OTP ကုဒ်စစ်ဆေးခြင်းစနစ် ပါဝင်သည်။</p>
+            </a>
+
+            <a href="{% if user.is_authenticated %}/dashboard/{% else %}/login/{% endif %}" class="p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-3 hover:border-emerald-500/50 transition block hover:bg-slate-900/50 group">
+                <div class="text-emerald-400 text-2xl group-hover:scale-110 transition duration-300"><i class="fa-solid fa-bolt"></i></div>
+                <h3 class="font-bold text-slate-200 text-base group-hover:text-emerald-400 transition">Instant Borrowing</h3>
+                <p class="text-xs text-slate-500">စာအုပ်များကို Quick Borrow စနစ်ဖြင့် လွယ်ကူလျင်မြန်စွာ ငှားယူဖတ်ရှုနိုင်သည်။</p>
+            </a>
+
+            <a href="{% if user.is_authenticated %}/dashboard/{% else %}/login/{% endif %}" class="p-6 bg-slate-950 border border-slate-800 rounded-2xl space-y-3 hover:border-amber-500/50 transition block hover:bg-slate-900/50 group">
+                <div class="text-amber-400 text-2xl group-hover:scale-110 transition duration-300"><i class="fa-solid fa-chart-pie"></i></div>
+                <h3 class="font-bold text-slate-200 text-base group-hover:text-amber-400 transition">Personal Dashboard</h3>
+                <p class="text-xs text-slate-500">မိမိ၏ စာအုပ်ငှားရမ်းမှုမှတ်တမ်းများ၊ အပ်ရန်ရက်စွဲများနှင့် ဒဏ်ကြေး (Fines) များကို စနစ်တကျ ပြန်လည်စစ်ဆေးနိုင်သည်။</p>
+            </a>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800/60 bg-slate-950 py-6 text-center text-xs text-slate-600">
+        &copy; 2026 Smart Digital Library & Resource Center. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

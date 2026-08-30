@@ -1,0 +1,117 @@
+{% load static %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - Smart Library</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Django custom fields တွေကို Tailwind ပုံစံလှပသွားအောင် input element တွေကို style ဖမ်းခြင်း */
+        form input {
+            width: 100%;
+            background-color: #0f172a; /* bg-slate-900 */
+            color: #f1f5f9; /* text-slate-100 */
+            border: 1px solid #334155; /* border-slate-700 */
+            padding: 0.75rem; /* p-3 */
+            border-radius: 0.75rem; /* rounded-xl */
+            outline: none;
+            margin-top: 0.25rem;
+        }
+        form input:focus {
+            border-color: #4f46e5; /* focus:border-indigo-600 */
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+
+    <nav class="border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            
+            <a href="/" class="flex items-center gap-4 group">
+                <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800/80 p-1 flex items-center justify-center shadow-2xl shadow-indigo-500/10 overflow-hidden group-hover:border-indigo-500/40 transition duration-300">
+                    <img src="{% static 'images/UCSM_logo.png' %}" 
+                         alt="UCSM Logo" 
+                         class="w-full h-full object-contain [image-rendering:high-quality] scale-105">
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-wide text-slate-200 block leading-tight group-hover:text-indigo-400 transition duration-300">Smart Digital Library</span>
+                    <span class="text-xs text-indigo-400 font-semibold block mt-1 tracking-wider uppercase">UCSM Resource Center</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-4">
+                <a href="/login/" class="text-sm font-medium text-slate-400 hover:text-white transition">လော့ဂ်အင်ဝင်ရန်</a>
+                <a href="/signup/" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/20">အကောင့်အသစ်ဖွင့်ရန်</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-md w-full mx-auto px-6 py-12 flex-grow flex flex-col justify-center">
+        <div class="bg-slate-950 p-8 rounded-2xl border border-slate-800 shadow-2xl my-6">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 text-2xl mb-3">
+                    <i class="fa-solid fa-user-plus"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-200">ကျောင်းသားအကောင့်အသစ်ဖွင့်ရန်</h2>
+                <p class="text-sm text-slate-500 mt-1">University Library Portal</p>
+            </div>
+
+            {% if form.errors %}
+                <div class="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-xl text-sm mb-4">
+                    <strong class="block mb-1">❌ အကောင့်ဆောက်၍မရပါ၊ အောက်ပါတို့ကို ပြင်ဆင်ပါ-</strong>
+                    <ul class="list-disc list-inside space-y-1 text-xs opacity-90">
+                        {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                                <li><strong>{{ field|capfirst }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <form method="POST" class="space-y-4">
+                {% csrf_token %}
+                
+                <div>
+                    <label class="text-sm text-slate-400 block">အသုံးပြုမည့်အမည် (Username)</label>
+                    {{ form.username }}
+                </div>
+                
+                <div>
+                    <label class="text-sm text-slate-400 block">အီးမေးလ် (Email)</label>
+                    {{ form.email }}
+                </div>
+                
+                <div>
+                    <label class="text-sm text-slate-400 block">ကျောင်းသားကတ်နံပါတ် (Student ID)</label>
+                    {{ form.student_id }}
+                </div>
+                
+                <div>
+                    <label class="text-sm text-slate-400 block">စကားဝှက် (Password)</label>
+                    {{ form.password }}
+                </div>
+                
+                <div>
+                    <label class="text-sm text-slate-400 block">စကားဝှက်အား ထပ်မံရိုက်ထည့်ပါ (Confirm Password)</label>
+                    {{ form.confirm_password }}
+                </div>
+                
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition cursor-pointer shadow-lg shadow-indigo-600/20 mt-6 block text-center">
+                    အကောင့်ဆောက်မည်
+                </button>
+            </form>
+
+            <p class="text-sm text-slate-500 text-center mt-6">အကောင့်ရှိပြီးသားလား? <a href="/login/" class="text-indigo-400 hover:underline">လော့ဂ်အင်ဝင်ရန်</a></p>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800/60 bg-slate-950 py-6 text-center text-xs text-slate-600">
+        &copy; 2026 Smart Digital Library & Resource Center. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

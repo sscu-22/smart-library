@@ -1,0 +1,110 @@
+<!--
+{% load static %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}UCSM Library Admin Portal{% endblock %}</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    {% block extrastyle %}{% endblock %}
+    {{ media.css }}
+    
+    <style>
+        /* 🎨 THEME OVERRIDES (Cyber Dark UI) */
+        body, html { background-color: #020617 !important; color: #f1f5f9 !important; font-family: sans-serif; margin: 0; padding: 0; }
+        #container { background-color: #020617 !important; display: flex !important; flex-direction: column !important; min-height: 100vh !important; }
+        #header { display: none !important; } /* မူရင်း Header ဟောင်းကို ပိတ်ဆို့ခြင်း */
+        
+        #content { background: #020617 !important; padding: 40px !important; }
+        .module { 
+            background-color: #0b1329 !important; 
+            border: 1px solid #1e293b !important; 
+            border-radius: 24px !important; 
+            overflow: hidden !important; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+            margin-bottom: 30px !important;
+        }
+        
+        .module caption, .module h2 { 
+            background: linear-gradient(135deg, #4f46e5, #3730a3) !important; 
+            color: #ffffff !important; 
+            font-weight: 800 !important; 
+            padding: 16px 24px !important; 
+            text-transform: uppercase;
+            font-size: 0.95rem !important;
+        }
+        
+        .module table { width: 100% !important; background-color: #0b1329 !important; }
+        .module table tr th { background-color: #0f172a !important; color: #94a3b8 !important; padding: 14px 20px !important; border-bottom: 1px solid #1e293b !important; }
+        .module table tr td { border-bottom: 1px solid #1e293b/40 !important; padding: 14px 20px !important; color: #cbd5e1 !important; }
+        
+        .addlink, .changelink { font-weight: 600 !important; color: #818cf8 !important; }
+        .addlink:hover, .changelink:hover { color: #6366f1 !important; text-decoration: underline !important; }
+        #content > h1 { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <header class="w-full bg-slate-950 border-b border-slate-800 px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-2xl z-50">
+            
+            <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 p-1 flex items-center justify-center shadow-xl overflow-hidden flex-shrink-0">
+                    <img src="{% static 'images/UCSM_logo.png' %}" 
+                         alt="UCSM Logo" 
+                         class="w-full h-full object-contain [image-rendering:high-quality] scale-105">
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-l font-black text-slate-100 tracking-wide">UCSM စာကြည့်တိုက်စီမံခန့်ခွဲသူ</h1>
+                        <span class="bg-indigo-500/10 text-indigo-400 text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-md border border-indigo-500/20">Admin Core</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">Smart Digital Library & Management Portal</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl px-4 py-2 flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-black text-sm shadow-md">
+                        {{ user.username|slice:":1"|upper }}
+                    </div>
+                    <div class="text-left">
+                        <span class="text-xs font-bold text-slate-200 block">{{ user.username }}</span>
+                        <span class="text-[10px] text-purple-400 font-semibold flex items-center gap-1">
+                            {% if user.is_superuser %}
+                                <i class="fa-solid fa-crown text-[9px]"></i> Super Admin (အဆင့်မြင့်ဆုံး)
+                            {% else %}
+                                <i class="fa-solid fa-user-shield text-[9px]"></i> စာကြည့်တိုက် ဝန်ထမ်း
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <a href="/" target="_blank" class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition shadow-md" title="ပင်မ ဝဘ်ဆိုက်သို့ သွားရန်">
+                        <i class="fa-solid fa-globe text-sm"></i>
+                    </a>
+                    <a href="{% url 'logout' %}" class="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500 hover:text-white flex items-center justify-center transition shadow-md" title="စနစ်မှ ထွက်ရန်">
+                        <i class="fa-solid fa-power-off text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main id="content" class="flex-grow">
+            {% block messages %}
+                {% if messages %}
+                <ul class="messagelist mb-4">{% for message in messages %}<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>{% endfor %}</ul>
+                {% endif %}
+            {% endblock messages %}
+            
+            {% block content %}{{ content }}{% endblock %}
+        </main>
+    </div>
+
+</body>
+</html>
+*/
+-->

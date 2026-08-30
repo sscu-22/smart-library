@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-5xl">
+    <a href="{% url 'search' %}" class="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-indigo-300 mb-5">
+        <i class="fa-solid fa-arrow-left"></i> Back to search
+    </a>
+
+    <section class="bg-slate-950 border border-slate-800 rounded-lg p-6">
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="w-32 h-44 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden flex-shrink-0">
+                {% if book.cover_image_url %}
+                <img src="{{ book.cover_image_url }}" alt="{{ book.title }}" class="w-full h-full object-cover">
+                {% else %}
+                <i class="fa-solid fa-book-open text-4xl text-indigo-400"></i>
+                {% endif %}
+            </div>
+
+            <div class="flex-1 min-w-0">
+                <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                    <div>
+                        <h1 class="text-3xl font-bold text-slate-100">{{ book.title }}</h1>
+                        <p class="text-slate-400 mt-2">By {{ book.author }}</p>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                    <form method="POST" action="{% url 'toggle_bookmark' book.id %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                        <button class="inline-flex items-center gap-2 px-4 py-2 rounded-md border border-slate-800 hover:border-amber-400 text-amber-300">
+                            {% if is_saved %}
+                            <i class="fa-solid fa-bookmark"></i> Saved
+                            {% else %}
+                            <i class="fa-regular fa-bookmark"></i> Save
+                            {% endif %}
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+                    <div class="bg-slate-900 rounded-lg p-3">
+                        <p class="text-xs text-slate-500">Category</p>
+                        <p class="font-semibold text-slate-200">{{ book.category.name|default:"Uncategorized" }}</p>
+                    </div>
+                    <div class="bg-slate-900 rounded-lg p-3">
+                        <p class="text-xs text-slate-500">Code</p>
+                        <p class="font-semibold text-slate-200">{{ book.code_number|default:"-" }}</p>
+                    </div>
+                    <div class="bg-slate-900 rounded-lg p-3">
+                        <p class="text-xs text-slate-500">Available</p>
+                        <p class="font-semibold text-emerald-300">{{ book.available_copies }}</p>
+                    </div>
+                    <div class="bg-slate-900 rounded-lg p-3">
+                        <p class="text-xs text-slate-500">Views</p>
+                        <p class="font-semibold text-indigo-300">{{ book.views_count }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-5 flex flex-wrap gap-2 text-xs">
+                    {% if book.language %}<span class="px-2 py-1 rounded bg-emerald-500/10 text-emerald-300">{{ book.language }}</span>{% endif %}
+                    {% if book.published_year %}<span class="px-2 py-1 rounded bg-slate-800 text-slate-300">{{ book.published_year }}</span>{% endif %}
+                    {% for tag in book.tag_list %}
+                    <span class="px-2 py-1 rounded-full border border-slate-800 text-slate-400">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+
+                {% if user.is_authenticated %}
+                <a href="{% url 'quick_borrow' book.id %}" class="inline-flex items-center gap-2 mt-6 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md">
+                    <i class="fa-solid fa-hand-holding-heart"></i> Borrow this book
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    {% if related_books %}
+    <section class="mt-8">
+        <h2 class="text-sm font-semibold text-slate-300 mb-3">Related books</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+            {% for item in related_books %}
+            <a href="{% url 'book_detail' item.id %}" class="bg-slate-950 border border-slate-800 rounded-lg p-4 hover:border-indigo-500 transition">
+                <p class="font-semibold text-slate-100">{{ item.title }}</p>
+                <p class="text-xs text-slate-500 mt-1">{{ item.author }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}

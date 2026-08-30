@@ -1,0 +1,42 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrahead %}
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    /* Dark Theme Customization */
+    body { background-color: #020617 !important; }
+    .sidebar { background: #020617 !important; }
+    .module { background: #1e293b !important; border-radius: 12px !important; }
+    .module h2 { background: #6366f1 !important; color: white !important; }
+</style>
+{% endblock %}
+
+{% block branding %}
+<h1 class="text-white text-xl font-bold px-4">UCSM Digital Library Admin</h1>
+{% endblock %}
+
+{% block nav-sidebar %}
+<nav class="space-y-1.5 p-4">
+    <!-- Admin Home -->
+    <a href="/admin/" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-900 rounded-xl transition font-medium">
+        <i class="fa-solid fa-house-chimney text-indigo-400"></i> Admin Home
+    </a>
+    
+    <!-- စာအုပ်များ စီမံရန် -->
+    <a href="/admin/books/book/" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-900 rounded-xl transition font-medium">
+        <i class="fa-solid fa-book-open text-emerald-400"></i> စာအုပ်များ စီမံရန်
+    </a>
+    
+    <!-- Categories စီမံရန် -->
+    <a href="/admin/books/category/" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-900 rounded-xl transition font-medium">
+        <i class="fa-solid fa-tags text-amber-400"></i> Categories စီမံရန်
+    </a>
+    
+    <!-- အသုံးပြုသူများ -->
+    <a href="/admin/accounts/customuser/" class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-slate-200 hover:bg-slate-900 rounded-xl transition font-medium">
+        <i class="fa-solid fa-users text-sky-400"></i> အသုံးပြုသူများ စီမံရန်
+    </a>
+</nav>
+{% endblock %}

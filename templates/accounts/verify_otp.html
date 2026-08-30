@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify OTP - Smart Library</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 flex items-center justify-center min-h-screen p-4">
+
+    <div class="max-w-sm w-full bg-slate-950 p-8 rounded-2xl border border-slate-800 shadow-2xl text-center">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 text-2xl mb-4">
+            <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h2 class="text-xl font-bold text-slate-200">OTP ကုဒ် အတည်ပြုရန်</h2>
+        <p class="text-sm text-slate-400 mt-2">လူကြီးမင်း၏ အီးမေးလ်ထံသို့ ပေးပို့ထားသော <span class="text-indigo-400 font-bold">6-Digit</span> ကုဒ်ကို ရိုက်ထည့်ပေးပါဗျာ။</p>
+
+        <form method="POST" class="mt-6 space-y-4">
+            {% csrf_token %}
+            <input type="text" name="otp" placeholder="X X X X X X" maxlength="6" required class="bg-slate-900 border border-slate-800 rounded-xl px-4 py-4 text-center text-2xl font-black tracking-widest text-indigo-400 w-full focus:outline-none focus:border-indigo-500">
+            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition cursor-pointer mt-2">အကောင့်အတည်ပြုမည်</button>
+        </form>
+    </div>
+
+</body>
+</html>

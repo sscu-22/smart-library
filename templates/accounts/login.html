@@ -1,0 +1,82 @@
+{% load static %} <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Library</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans flex flex-col justify-between">
+
+    <nav class="border-b border-slate-800 bg-slate-950/50 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            
+            <a href="/" class="flex items-center gap-4 group">
+                <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800/80 p-1 flex items-center justify-center shadow-2xl shadow-indigo-500/10 overflow-hidden group-hover:border-indigo-500/40 transition duration-300">
+                    <img src="{% static 'images/UCSM_logo.png' %}" 
+                         alt="UCSM Logo" 
+                         class="w-full h-full object-contain [image-rendering:high-quality] scale-105">
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-wide text-slate-200 block leading-tight group-hover:text-indigo-400 transition duration-300">Smart Digital Library</span>
+                    <span class="text-xs text-indigo-400 font-semibold block mt-1 tracking-wider uppercase">UCSM Resource Center</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-4">
+                <a href="/login/" class="text-sm font-medium text-slate-400 hover:text-white transition">လော့ဂ်အင်ဝင်ရန်</a>
+                <a href="/signup/" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition shadow-lg shadow-indigo-600/20">အကောင့်အသစ်ဖွင့်ရန်</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-md w-full mx-auto px-6 py-12 flex-grow flex flex-col justify-center">
+        <div class="bg-slate-950 p-8 rounded-2xl border border-slate-800 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 text-2xl mb-3">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-200">စနစ်အတွင်းသို့ ဝင်ရောက်ရန်</h2>
+                <p class="text-sm text-slate-500 mt-1">University Library Portal</p>
+            </div>
+
+            {% if messages %}
+                <div class="space-y-2 mb-5">
+                    {% for message in messages %}
+                        <div class="bg-red-500/10 border border-red-500/20 text-red-400 p-3.5 rounded-xl text-sm flex items-start gap-2.5">
+                            <i class="fa-solid fa-circle-exclamation mt-0.5 flex-shrink-0 text-base"></i>
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="POST" class="space-y-5">
+                {% csrf_token %}
+                <div>
+                    <label class="text-sm text-slate-400 block mb-1">အသုံးပြုသူအမည် (Username)</label>
+                    <input type="text" name="username" required class="bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 w-full focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="text-sm text-slate-400 block mb-1">စကားဝှက် (Password)</label>
+                    <input type="password" name="password" required class="bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-slate-200 w-full focus:outline-none focus:border-indigo-500">
+                </div>
+                <div class="text-right mt-1">
+                    <a href="{% url 'password_reset' %}" class="text-xs text-indigo-400 hover:underline">Password မေ့နေပါသလား?</a>
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition cursor-pointer shadow-lg shadow-indigo-600/20 mt-2">
+                    လော့ဂ်အင်ဝင်မည်
+                </button>
+            </form>
+
+            <p class="text-sm text-slate-500 text-center mt-6">အကောင့်မရှိသေးဘူးလား? <a href="/signup/" class="text-indigo-400 hover:underline">ကျောင်းသားအကောင့်ဖွင့်ရန်</a></p>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800/60 bg-slate-950 py-6 text-center text-xs text-slate-600">
+        &copy; 2026 Smart Digital Library & Resource Center. All Rights Reserved.
+    </footer>
+
+</body>
+</html>

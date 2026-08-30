@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="mb-8 p-6 bg-gradient-to-r from-indigo-900 to-slate-950 rounded-lg border border-indigo-500/20">
+    <h1 class="text-3xl font-extrabold text-slate-100">Smart Library Dashboard</h1>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="bg-slate-950 p-6 rounded-lg border border-slate-800">
+        <p class="text-slate-400 text-sm">Total Books</p>
+        <p class="text-3xl font-black text-slate-100 mt-1">{{ total_books }}</p>
+    </div>
+    <div class="bg-slate-950 p-6 rounded-lg border border-slate-800">
+        <p class="text-slate-400 text-sm">Active Borrows</p>
+        <p class="text-3xl font-black text-emerald-400 mt-1">{{ active_borrows }}</p>
+    </div>
+    <div class="bg-slate-950 p-6 rounded-lg border border-slate-800">
+        <p class="text-slate-400 text-sm">Members</p>
+        <p class="text-3xl font-black text-purple-400 mt-1">{{ total_users }}</p>
+    </div>
+    <div class="bg-slate-950 p-6 rounded-lg border border-slate-800">
+        <p class="text-slate-400 text-sm">Saved Books</p>
+        <p class="text-3xl font-black text-amber-400 mt-1">{{ saved_count }}</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <div class="bg-slate-950 p-6 rounded-lg border border-slate-800 xl:col-span-2">
+        <h3 class="text-lg font-bold mb-4">Popular Books</h3>
+        <div class="h-64"><canvas id="libraryChart"></canvas></div>
+    </div>
+
+    <div class="space-y-6">
+        <div class="bg-slate-950 p-6 rounded-lg border border-slate-800">
+            <h3 class="text-lg font-bold mb-4">Low Stock</h3>
+            <div class="space-y-3">
+                {% for book in low_stock_books %}
+                <div class="flex items-center justify-between gap-3 text-sm">
+                    <span class="text-slate-300 truncate">{{ book.title }}</span>
+                    <span class="text-amber-400 font-semibold">{{ book.available_copies }}</span>
+                </div>
+                {% empty %}
+                <p class="text-sm text-slate-500">No low-stock books.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bg-slate-950 p-6 rounded-lg border border-slate-800">
+            <h3 class="text-lg font-bold mb-4">Top Categories</h3>
+            <div class="space-y-3">
+                {% for category in category_stats %}
+                <div class="flex items-center justify-between gap-3 text-sm">
+                    <span class="text-slate-300 truncate">{{ category.name }}</span>
+                    <span class="text-indigo-300 font-semibold">{{ category.total }}</span>
+                </div>
+                {% empty %}
+                <p class="text-sm text-slate-500">No category data yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ book_labels|json_script:"book-labels-data" }}
+{{ book_views|json_script:"book-views-data" }}
+
+<script>
+const bookLabels = JSON.parse(document.getElementById('book-labels-data').textContent || '[]');
+const bookViews = JSON.parse(document.getElementById('book-views-data').textContent || '[]');
+
+new Chart(document.getElementById('libraryChart').getContext('2d'), {
+    type: 'line',
+    data: {
+        labels: bookLabels,
+        datasets: [{
+            data: bookViews,
+            borderColor: '#6366f1',
+            tension: 0.4,
+            fill: true,
+            backgroundColor: 'rgba(99,102,241,0.08)'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } }
+    }
+});
+</script>
+{% endblock %}

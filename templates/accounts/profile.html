@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %} {% block content %}
+<div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-950 p-6 rounded-2xl border border-slate-800 gap-4">
+    <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 p-1 flex items-center justify-center shadow-lg overflow-hidden flex-shrink-0">
+            <img src="{% static 'images/UCSM_logo.png' %}" alt="UCSM Logo" class="w-full h-full object-contain [image-rendering:high-quality]">
+        </div>
+        <div>
+            <h1 class="text-2xl font-bold text-slate-200">{{ user.username }}</h1>
+            <p class="text-sm text-slate-400">ID: {{ user.student_id }} | Email: {{ user.email }}</p>
+        </div>
+    </div>
+
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
+        <p class="text-slate-400 text-sm">လက်ရှိငှားထားသောစာအုပ်</p>
+        <p class="text-2xl font-black text-indigo-400 mt-1">{{ borrowed_count }} အုပ် / {{ user.max_borrow_limit }} အုပ်</p>
+    </div>
+    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
+        <p class="text-slate-400 text-sm">ကျသင့်နေသော ဒဏ်ကြေးစုစုပေါင်း</p>
+        <p class="text-2xl font-black {% if total_fine > 0 %}text-red-400{% else %}text-emerald-400{% endif %} mt-1">{{ total_fine }} ကျပ်</p>
+    </div>
+    <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
+        <p class="text-slate-400 text-sm">အဖွဲ့ဝင်အဆင့်အတန်း</p>
+        <p class="text-2xl font-black text-emerald-400 mt-1">Active Member</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+    <div class="bg-slate-950 rounded-lg border border-slate-800 p-5">
+        <h3 class="text-sm font-bold text-slate-300 mb-4"><i class="fa-solid fa-bookmark text-amber-400 mr-2"></i>Saved Books</h3>
+        <div class="space-y-3">
+            {% for item in saved_books %}
+            <a href="{% url 'book_detail' item.book.id %}" class="block bg-slate-900 rounded-lg p-3 hover:bg-slate-800">
+                <p class="font-semibold text-slate-100">{{ item.book.title }}</p>
+                <p class="text-xs text-slate-500">{{ item.book.author }}</p>
+            </a>
+            {% empty %}
+            <p class="text-sm text-slate-500">No saved books yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="bg-slate-950 rounded-lg border border-slate-800 p-5">
+        <h3 class="text-sm font-bold text-slate-300 mb-4"><i class="fa-solid fa-clock-rotate-left text-indigo-400 mr-2"></i>Recently Viewed</h3>
+        <div class="space-y-3">
+            {% for item in recent_books %}
+            <a href="{% url 'book_detail' item.book.id %}" class="block bg-slate-900 rounded-lg p-3 hover:bg-slate-800">
+                <p class="font-semibold text-slate-100">{{ item.book.title }}</p>
+                <p class="text-xs text-slate-500">{{ item.viewed_at }}</p>
+            </a>
+            {% empty %}
+            <p class="text-sm text-slate-500">No reading history yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="bg-slate-950 rounded-2xl border border-slate-800 p-6">
+    <h3 class="text-lg font-bold mb-4"><i class="fa-solid fa-list-check text-indigo-400 mr-2"></i>  လက်ရှိငှားရမ်းထားသော စာအုပ်များစာရင်း</h3>
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-slate-300">
+            <thead class="bg-slate-900 text-slate-400 text-xs uppercase border-b border-slate-800">
+                <tr>
+                    <th class="p-4">စာအုပ်အမည်</th>
+                    <th class="p-4">ငှားရမ်းသည့်ရက်စွဲ</th>
+                    <th class="p-4">ပြန်အပ်ရမည့်ရက်စွဲ</th>
+                    <th class="p-4">ကျသင့်ဒဏ်ကြေး</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-900">
+                {% for record in my_borrows %}
+                <tr class="hover:bg-slate-900/50">
+                    <td class="p-4 font-semibold text-slate-200">{{ record.book.title }}</td>
+                    <td class="p-4">{{ record.borrow_date }}</td>
+                    <td class="p-4 text-amber-400">{{ record.due_date }}</td>
+                    <td class="p-4 text-red-400">{{ record.calculate_fine }} ကျပ်</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="p-4 text-center text-slate-500 py-8">လက်ရှိ ငှားရမ်းထားသော စာအုပ်မရှိသေးပါ။</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
