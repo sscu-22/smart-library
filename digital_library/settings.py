@@ -112,8 +112,9 @@ SECRET_KEY = "django-insecure-2ho2nbj8(rutseedgaalm41n60q=p^avtke(zsmvg*l5(e_lr#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#ALLOWED_HOSTS = ['smartlibrary.ucsm.edu.mm']
-ALLOWED_HOSTS = []
+#ALLOWED_HOSTS = ['
+# ']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
